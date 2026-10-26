@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Two months, wifey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1a1326; --plum:#2b1d3f; --blush:#f4b6c2; --apricot:#ffd3a8; --mist:#efe6f7;
+  color-scheme:dark; box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:radial-gradient(120% 90% at 50% 40%,var(--plum),var(--ink));color:var(--mist);
+  font-family:'DM Sans',system-ui,sans-serif;overflow-x:hidden;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+.stage{position:relative;min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center}
+h1{font-family:'Young Serif',Georgia,serif;font-weight:400;font-size:clamp(2.2rem,8vw,3.8rem);line-height:1.1;margin:0 0 .6rem;transition:opacity .8s}
+.sub{margin:0;color:#c9b8dc;font-size:1rem;transition:opacity .8s}
+.field{position:relative;width:min(92vw,560px);height:200px;margin:2.5rem 0 1.5rem;cursor:pointer;touch-action:none}
+.orb{position:absolute;top:50%;width:84px;height:84px;margin:-42px 0 0 -42px;border-radius:50%;
+  will-change:left,transform}
+.orb.a{background:radial-gradient(circle at 35% 30%,#fff3,var(--blush) 40%,#d9758f);box-shadow:0 0 60px 14px #f4b6c266}
+.orb.b{background:radial-gradient(circle at 35% 30%,#fff3,var(--apricot) 40%,#e59a63);box-shadow:0 0 60px 14px #ffd3a866}
+.thread{position:absolute;top:50%;height:2px;background:linear-gradient(90deg,var(--blush),var(--apricot));opacity:.5;transform:translateY(-1px)}
+.hint{font-size:.95rem;color:#c9b8dc;transition:opacity .6s}
+.bar{width:140px;height:3px;border-radius:3px;background:#ffffff1f;margin:14px auto 0;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blush),var(--apricot))}
+.letter{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:calc(20px + env(safe-area-inset-top,0px)) 20px calc(20px + env(safe-area-inset-bottom,0px));
+  background:#1a1326e6;opacity:0;pointer-events:none;transition:opacity 1s;overflow-y:auto}
+.letter.on{opacity:1;pointer-events:auto}
+.paper{max-width:460px;width:100%;margin:auto;background:linear-gradient(160deg,#fdf1f3,#fbe6d6);color:#3a2430;border-radius:6px;
+  padding:34px 28px 28px;text-align:left;box-shadow:0 30px 80px #0008;transform:translateY(24px) rotate(-.6deg);transition:transform 1s cubic-bezier(.2,.8,.2,1)}
+.letter.on .paper{transform:none}
+.paper h2{font-family:'Young Serif',Georgia,serif;font-weight:400;font-size:1.7rem;margin:0 0 14px}
+.paper p{font-family:Georgia,'Times New Roman',serif;line-height:1.75;margin:0 0 14px;font-size:1.02rem}
+.paper ul{margin:0 0 16px;padding-left:1.1rem;font-family:Georgia,serif;line-height:1.7}
+.sig{font-family:'Young Serif',Georgia,serif;margin:0;color:#b4455f}
+.again{display:block;margin:18px auto 0;background:none;border:1px solid #ffffff44;color:var(--mist);padding:10px 20px;border-radius:999px;
+  font:inherit;cursor:pointer}
+.again:hover,.again:focus-visible{border-color:var(--blush);outline:none}
+.heart{position:fixed;pointer-events:none;font-size:20px;color:var(--blush);will-change:transform,opacity}
+@media (prefers-reduced-motion:reduce){.paper,.letter{transition:none}}
+</style>
+</head>
+<body>
+<main class="stage" id="stage">
+  <h1 id="title">Two months, wifey.</h1>
+  <p class="sub" id="sub">Happy 2nd monthsary.</p>
+  <div class="field" id="field" role="button" tabindex="0" aria-label="Press and hold to bring the two lights together">
+    <div class="thread" id="thread"></div>
+    <div class="orb a" id="a"></div>
+    <div class="orb b" id="b"></div>
+  </div>
+  <div class="hint" id="hint">Press and hold to bring us closer</div>
+  <div class="bar"><i id="fill"></i></div>
+</main>
+
+<section class="letter" id="letter" aria-live="polite">
+  <article class="paper">
+    <h2>To my wifey,</h2>
+    <p>Two months. It feels like we just started, and also like you’ve always been part of my days.</p>
+    <p>Thank you for being patient with me, for listening, and for making ordinary moments feel lighter just by being in them.</p>
+    <ul>
+      <li>You make me want to be better.</li>
+      <li>Your messages are my favorite notifications.</li>
+      <li>I’m looking forward to every month after this one.</li>
+    </ul>
+    <p>Happy 2nd monthsary, love. I’m really glad it’s you.</p>
+    <p class="sig">— Edcor</p>
+    <button class="again" id="again">Hold again</button>
+  </article>
+</section>
+
+<script>
+(function(){
+  var field=document.getElementById('field'),a=document.getElementById('a'),b=document.getElementById('b'),
+      thread=document.getElementById('thread'),fill=document.getElementById('fill'),letter=document.getElementById('letter'),
+      hint=document.getElementById('hint'),title=document.getElementById('title'),sub=document.getElementById('sub');
+  var progress=0,holding=false,done=false,last=0;
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function layout(p){
+    var w=field.clientWidth,pad=60,left=pad+(w/2-pad)*p,right=w-pad-(w/2-pad)*p;
+    var bob=reduce?0:Math.sin(Date.now()/600)*6*(1-p);
+    a.style.left=left+'px'; b.style.left=right+'px';
+    a.style.transform='translateY('+bob+'px) scale('+(1+p*.25)+')';
+    b.style.transform='translateY('+(-bob)+'px) scale('+(1+p*.25)+')';
+    thread.style.left=left+'px'; thread.style.width=Math.max(0,right-left)+'px'; thread.style.opacity=.5*(1-p);
+    fill.style.width=(p*100)+'%';
+  }
+  function burst(){
+    var n=reduce?6:26;
+    for(var i=0;i<n;i++){
+      var h=document.createElement('div');h.className='heart';h.textContent='\u2665';
+      var x=innerWidth/2,y=innerHeight/2,ang=Math.random()*Math.PI*2,d=120+Math.random()*Math.min(innerWidth,500)/1.6;
+      h.style.left=x+'px';h.style.top=y+'px';h.style.fontSize=(14+Math.random()*20)+'px';
+      document.body.appendChild(h);
+      h.animate([{transform:'translate(0,0) scale(.4)',opacity:1},
+        {transform:'translate('+Math.cos(ang)*d+'px,'+(Math.sin(ang)*d-60)+'px) scale(1)',opacity:0}],
+        {duration:1400+Math.random()*900,easing:'cubic-bezier(.2,.7,.3,1)',fill:'forwards'}).onfinish=(function(el){return function(){el.remove()}})(h);
+    }
+  }
+  function finish(){
+    done=true;burst();
+    setTimeout(function(){letter.classList.add('on')},650);
+  }
+  function tick(t){
+    var dt=Math.min(50,t-last||16);last=t;
+    if(!done){
+      progress+=holding?dt/2200:-dt/1400;
+      progress=Math.max(0,Math.min(1,progress));
+      if(progress>=1)finish();
+    }
+    layout(progress);
+    var fade=progress>0.02?.35:1;
+    hint.style.opacity=fade;
+    requestAnimationFrame(tick);
+  }
+  function down(e){e.preventDefault();holding=true}
+  function up(){holding=false}
+  field.addEventListener('pointerdown',down);
+  addEventListener('pointerup',up);addEventListener('pointercancel',up);
+  field.addEventListener('keydown',function(e){if(e.key===' '||e.key==='Enter'){e.preventDefault();holding=true}});
+  field.addEventListener('keyup',function(){holding=false});
+  document.getElementById('again').addEventListener('click',function(){
+    letter.classList.remove('on');done=false;progress=0;holding=false;
+  });
+  addEventListener('resize',function(){layout(progress)});
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
